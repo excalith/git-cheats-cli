@@ -26,8 +26,8 @@ function ShowHelp() {
     console.log("A Terminal App For Reaching Gitcheats.com Easily");
     console.log("");
     console.log("Commands:");
-    console.log("gitcheats " + chalk.blue("[command]") + "                    Get command cheats right into your terminal");
-    console.log("gitcheats " + chalk.green("-l --launch") + chalk.blue(" [command]") + "        Open gitcheats in new browser with your git command");
+    console.log("gitcheats " + chalk.blue("[command]") + "                    Print command descriptions right into your terminal");
+    console.log("gitcheats " + chalk.green("-l --launch") + chalk.blue(" [command]") + "        Launch GitCheats.com in browser with your command filtered");
     console.log("gitcheats " + chalk.green("-h --help") + "                    Display this help");
 }
 
