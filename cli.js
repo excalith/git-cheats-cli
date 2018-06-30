@@ -1,75 +1,92 @@
 #!/usr/bin/env node
 const chalk = require('chalk');
-const Table = require('cli-table');
 const getJSON = require('get-json')
 const opn = require('opn');
 const ora = require('ora')
 
+const jsonLink = "https://raw.githubusercontent.com/excalith/Git-Cheats/master/assets/commands.json";
 let cmd = process.argv[2];
+let bar = chalk.green("║ ");
 
-
+// Check Arguments
 if (cmd == "-h" || cmd == "--help") {
     ShowHelp();
 }
 else if (cmd == "-l" || cmd == "--launch") {
-    opn("www.gitcheats.com?c=" + process.argv[3])
+    LaunchBrowser(process.argv[3]);
 }
 else if (cmd) {
-    GetCommand(process.argv[2])
+    FetchCommand(process.argv[2])
 }
 else {
-    opn("www.gitcheats.com")
+    LaunchBrowser(false);
 }
 
+/**
+ * Shows CLI help
+ */
 function ShowHelp() {
     console.log("");
     console.log("A Terminal App For Reaching Gitcheats.com Easily");
     console.log("");
     console.log("Commands:");
-    console.log("gitcheats " + chalk.blue("[command]") + "                    Print command descriptions right into your terminal");
-    console.log("gitcheats " + chalk.green("-l --launch") + chalk.blue(" [command]") + "        Launch GitCheats.com in browser with your command filtered");
+    console.log("gitcheats " + chalk.yellow("[command]") + "                    Print command descriptions right into your terminal");
+    console.log("gitcheats " + chalk.green("-l --launch") + chalk.yellow(" [command]") + "        Launch GitCheats.com in browser with your command filtered");
     console.log("gitcheats " + chalk.green("-h --help") + "                    Display this help");
 }
 
-function GetCommand(cmd) {
-    console.log("\n");
-    const spinner = ora().start();
-    spinner.color = 'blue';
-    spinner.text = chalk.blue("Fetching '" + chalk.green(cmd) + "' from gitcheats.com");
+/**
+ * Fetch command from original gitcheats json
+ *
+ * @param  {String} cmd Command to search for within json file
+ */
+function FetchCommand(cmd) {
+    const spinner = ora({
+        text: chalk.bold("Fetching '" + chalk.yellow(cmd) + "' from gitcheats.com"),
+        color: 'green',
+        interval: 80,
+        spinner: "dots"
+    }).start();
 
-    getJSON('https://raw.githubusercontent.com/excalith/Git-Cheats/master/assets/commands.json', function (error, json) {
+    getJSON(jsonLink, function (error, json) {
         let data = json.commands[cmd];
-        console.log("\n\n");
+        console.log("\n");
 
         if (data == null) {
-            console.log("Command " + chalk.red(cmd) + " not found in gitcheats.com");
-            console.log(chalk.gray("Please consider contributing " + "https://github.com/excalith/Git-Cheats"))
+            spinner.fail("Command '" + chalk.red(cmd) + "' not found in gitcheats.com");
+            console.log(chalk.gray("Please consider contributing https://github.com/excalith/Git-Cheats"))
         }
         else {
-            var table = new Table({
-                head: [chalk.green.bold('Option'), chalk.green.bold('Description')],
-                colWidths: [60, 220],
-                chars: {
-                    'top': '═', 'top-mid': '╤', 'top-left': '╔', 'top-right': '╗',
-                    'bottom': '═', 'bottom-mid': '╧', 'bottom-left': '╚',
-                    'bottom-right': '╝', 'left': '║', 'left-mid': '╟', 'mid': '─',
-                    'mid-mid': '┼', 'right': '║', 'right-mid': '╢', 'middle': '│'
-                }
-            });
-
-            table.push(
-                [cmd, data.desc.en]
-            );
+            LogCommand(cmd, data.desc.en);
 
             data.options.forEach(element => {
-                table.push(
-                    [element.code, element.desc.en]
-                );
+                LogCommand(element.code, element.desc.en);
             });
-
-            console.log(table.toString());
         }
-
         spinner.stop();
     })
+}
+
+/**
+ * Print command and description into terminal
+ *
+ * @param  {String} command Command title
+ * @param  {String} description Command description
+ */
+function LogCommand(command, description) {
+    console.log(bar + chalk.green.bold("> git " + command));
+    console.log(bar + description);
+    console.log(bar);
+}
+
+/**
+ * Fetch command from original gitcheats json
+ *
+ * @param  {boolean} hasCommand Checks if argv has a git command
+ */
+function LaunchBrowser(hasCommand) {
+    if (hasCommand)
+        opn("www.gitcheats.com?c=" + process.argv[3])
+    else
+        opn("www.gitcheats.com")
 }
