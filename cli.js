@@ -27,11 +27,12 @@ else {
  */
 function ShowHelp() {
     console.log("");
-    console.log("A Terminal App For Reaching Gitcheats.com Easily");
+    console.log(chalk.white.bold("GitCheats CLI - A Companion For GitCheats"));
     console.log("");
-    console.log("Commands:");
+    console.log(chalk.white.bold("Commands:"));
+    console.log("gitcheats                              Launch gitcheats.com directly");
     console.log("gitcheats " + chalk.yellow("[command]") + "                    Print command descriptions right into your terminal");
-    console.log("gitcheats " + chalk.green("-l --launch") + chalk.yellow(" [command]") + "        Launch GitCheats.com in browser with your command filtered");
+    console.log("gitcheats " + chalk.green("-l --launch") + chalk.yellow(" [command]") + "        Launch gitcheats.com in browser with your command filtered");
     console.log("gitcheats " + chalk.green("-h --help") + "                    Display this help");
 }
 
@@ -42,7 +43,7 @@ function ShowHelp() {
  */
 function FetchCommand(cmd) {
     const spinner = ora({
-        text: chalk.bold("Fetching '" + chalk.yellow(cmd) + "' from gitcheats.com"),
+        text: chalk.white.bold("Fetching '" + chalk.green(cmd) + "' from " + chalk.blue("http://gitcheats.com")),
         color: 'green',
         interval: 80,
         spinner: "dots"
@@ -54,7 +55,7 @@ function FetchCommand(cmd) {
 
         if (data == null) {
             spinner.fail("Command '" + chalk.red(cmd) + "' not found in gitcheats.com");
-            console.log(chalk.gray("Please consider contributing https://github.com/excalith/Git-Cheats"))
+            spinner.info(chalk.gray("If gitcheats is missing a command, please consider contributing https://github.com/excalith/Git-Cheats"));
         }
         else {
             LogCommand(cmd, data.desc.en);
@@ -63,6 +64,7 @@ function FetchCommand(cmd) {
                 LogCommand(element.code, element.desc.en);
             });
         }
+
         spinner.stop();
     })
 }
@@ -86,7 +88,14 @@ function LogCommand(command, description) {
  */
 function LaunchBrowser(hasCommand) {
     if (hasCommand)
-        opn("www.gitcheats.com?c=" + process.argv[3])
+    {
+        let command = process.argv[3];
+        console.log(chalk.white.bold("Launching '" + chalk.yellow(command) + "' on " + chalk.blue("http://gitcheats.com")))
+        opn("http://gitcheats.com?c=" + command)
+    }
     else
-        opn("www.gitcheats.com")
+    {
+        console.log(chalk.white.bold("Launching " + chalk.blue("http://gitcheats.com")))
+        opn("http://gitcheats.com")
+    }
 }
