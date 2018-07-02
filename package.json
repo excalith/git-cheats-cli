@@ -4,7 +4,15 @@
   "description": "A Companion CLI App For Gitcheats",
   "main": "cli.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "eslint ./",
+    "precommit": "lint-staged",
+    "start": "node cli.js"
+  },
+  "lint-staged": {
+    "*.{js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "author": "Can Cellek",
   "license": "MIT",
@@ -20,5 +28,15 @@
   },
   "bin": {
     "gitcheats": "./cli.js"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.5",
+    "eslint": "^4.19.1",
+    "eslint-config-google": "^0.9.1",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-prettier": "2.6.1",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.2.0",
+    "prettier": "1.13.7"
   }
 }
