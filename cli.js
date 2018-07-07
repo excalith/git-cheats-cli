@@ -34,7 +34,7 @@ function ShowHelp() {
     chalk.white.bold("\nGitCheats CLI - A Companion For GitCheats\n")
   );
   console.log(chalk.white.bold("Commands:"));
-  console.log("gitcheats".padEnd(39) + "Launch gitcheats.com directly");
+  console.log("gitcheats".padEnd(39) + "Open gitcheats.com in browser");
   console.log(
     "gitcheats " +
       chalk.yellow("[command]").padEnd(39) +
@@ -44,13 +44,13 @@ function ShowHelp() {
     "gitcheats " +
       chalk.green("-o --open") +
       chalk.yellow(" [command]").padEnd(30) +
-      "Launch gitcheats.com in browser with your command filtered"
+      "Open gitcheats.com in browser with your command filtered"
   );
   console.log(
     "gitcheats " +
       chalk.green("-l --language") +
       chalk.yellow(" [key]").padEnd(26) +
-      "Set your preffered language (Options: en, tr, tel, hin, kli)"
+      "Set your preffered language (Default: en)"
   );
   console.log(
     "gitcheats " + chalk.green("-h --help").padEnd(39) + "Display this help"
@@ -83,7 +83,8 @@ function FetchCommand(cmd) {
       spinner.fail("Command " + chalk.red(cmd) + " not found in gitcheats.com");
       spinner.info(
         chalk.gray(
-          "If gitcheats is missing a command, please consider contributing https://github.com/excalith/Git-Cheats"
+          "If gitcheats is missing a command, please consider contributing " +
+            chalk.blue("https://github.com/excalith/Git-Cheats")
         )
       );
     } else {
@@ -116,12 +117,12 @@ function SetLanguage(key) {
     console.log("\n");
 
     if (data == null) {
-      spinner.fail("Language not found!");
-      spinner.info(
-        chalk.gray(
-          "Please add your language by contributing to https://github.com/excalith/Git-Cheats"
-        )
-      );
+      spinner.fail("Language not found. Available languages:");
+      Object.keys(json.settings.languages).forEach(function(key) {
+        console.log(
+          key.padStart(4) + ": ".padStart(5) + json.settings.languages[key]
+        );
+      });
     } else {
       conf.set("lang", key);
       spinner.succeed("Language set to " + data + "\n");
@@ -154,7 +155,7 @@ function LaunchBrowser(hasCommand) {
     console.log(
       chalk.white.bold(
         "Launching " +
-          chalk.yellow(command) +
+          chalk.green(command) +
           " on " +
           chalk.blue("http://gitcheats.com")
       )
