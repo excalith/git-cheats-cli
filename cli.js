@@ -3,17 +3,23 @@ const chalk = require("chalk");
 const getJSON = require("get-json");
 const opn = require("opn");
 const ora = require("ora");
-
+const Configstore = require("configstore");
+const pkg = require("./package.json");
 const jsonLink =
   "https://raw.githubusercontent.com/excalith/Git-Cheats/master/assets/commands.json";
+const conf = new Configstore(pkg.name, { lang: "en" });
+
 let cmd = process.argv[2];
 let bar = chalk.green("║ ");
+let lang = conf.get("lang");
 
 // Check Arguments
 if (cmd == "-h" || cmd == "--help") {
   ShowHelp();
-} else if (cmd == "-l" || cmd == "--launch") {
+} else if (cmd == "-o" || cmd == "--open") {
   LaunchBrowser(process.argv[3]);
+} else if (cmd == "-l" || cmd == "--language") {
+  SetLanguage(process.argv[3]);
 } else if (cmd) {
   FetchCommand(process.argv[2]);
 } else {
@@ -36,9 +42,15 @@ function ShowHelp() {
   );
   console.log(
     "gitcheats " +
-      chalk.green("-l --launch") +
-      chalk.yellow(" [command]").padEnd(28) +
+      chalk.green("-o --open") +
+      chalk.yellow(" [command]").padEnd(30) +
       "Launch gitcheats.com in browser with your command filtered"
+  );
+  console.log(
+    "gitcheats " +
+      chalk.green("-l --language") +
+      chalk.yellow(" [key]").padEnd(26) +
+      "Set your preffered language (Options: en, tr, tel, hin, kli)"
   );
   console.log(
     "gitcheats " + chalk.green("-h --help").padEnd(39) + "Display this help"
@@ -75,11 +87,44 @@ function FetchCommand(cmd) {
         )
       );
     } else {
-      LogCommand(cmd, data.desc.en);
+      LogCommand(cmd, data.desc[lang]);
 
       data.options.forEach(element => {
-        LogCommand(element.code, element.desc.en);
+        LogCommand(element.code, element.desc[lang]);
       });
+    }
+
+    spinner.stop();
+  });
+}
+
+/**
+ * Check if language exists and set it to given key
+ *
+ * @param  {String} key Language key
+ */
+function SetLanguage(key) {
+  const spinner = ora({
+    text: chalk.white.bold("Fetching Language: " + key),
+    color: "green",
+    interval: 80,
+    spinner: "dots"
+  }).start();
+
+  getJSON(jsonLink, function(error, json) {
+    let data = json.settings.languages[key];
+    console.log("\n");
+
+    if (data == null) {
+      spinner.fail("Language not found!");
+      spinner.info(
+        chalk.gray(
+          "Please add your language by contributing to https://github.com/excalith/Git-Cheats"
+        )
+      );
+    } else {
+      conf.set("lang", key);
+      spinner.succeed("Language set to " + data + "\n");
     }
 
     spinner.stop();

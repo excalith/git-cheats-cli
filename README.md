@@ -45,12 +45,13 @@ You can either use web based [GitCheats App](http://gitcheats.com) from your bro
 
 ## Available Commands:
 
-| _Command_                    | _Description_                                              |
-| ---------------------------- | ---------------------------------------------------------- |
-| gitcheats                    | Launch gitcheats.com directly                              |
-| gitcheats [command]          | Print command descriptions right into your terminal        |
-| gitcheats --launch [command] | Launch gitcheats.com in browser with your command filtered |
-| gitcheats --help             | Show commands for the app                                  |
+| _Command_                  | _Description_                                             |
+| -------------------------- | --------------------------------------------------------- |
+| gitcheats                  | Launch gitcheats.com directly                             |
+| gitcheats [command]        | Print command descriptions right into your terminal       |
+| gitcheats --open [command] | Open gitcheats.com in browser with your command filtered  |
+| gitcheats --language [key] | Set your preffered language (Keys: en, tr, tel, hin, kli) |
+| gitcheats --help           | Show commands for the app                                 |
 
 ## How To Contribute:
 
