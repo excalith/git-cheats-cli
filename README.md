@@ -9,8 +9,8 @@
 </p>
 
 <p align="center">
-	<a href="https://travis-ci.org/excalith/Git-Cheats-Cli">
-		<img alt="Build Status" height="18" src="https://img.shields.io/travis/excalith/Git-Cheats-Cli.svg">
+	<a href="https://travis-ci.org/excalith/git-cheats-cli">
+		<img alt="Build Status" height="18" src="https://img.shields.io/travis/excalith/git-cheats-cli.svg">
 	</a>
 	<a href="https://github.com/excalith/Git-Cheats-Cli/issues">
 		<img alt="Build Status" height="18" src="https://img.shields.io/github/issues/excalith/Git-Cheats-Cli.svg">

@@ -7,7 +7,5 @@ node_js:
   - "lts/*"
   - "7"
   - "6"
-  - "5"
-  - "4"
 script:
   - npm test
