@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 const chalk = require("chalk");
-const getJSON = require("get-json");
+const request = require("request");
 const opn = require("opn");
 const ora = require("ora");
 const Configstore = require("configstore");
 const pkg = require("./package.json");
 const jsonLink =
-  "https://raw.githubusercontent.com/excalith/Git-Cheats/master/assets/commands.json";
+  "https://raw.githubusercontent.com/excalith/git-cheats/master/assets/commands.json";
 const conf = new Configstore(pkg.name, { lang: "en" });
 
 let cmd = process.argv[2];
@@ -75,28 +75,38 @@ function FetchCommand(cmd) {
     spinner: "dots"
   }).start();
 
-  getJSON(jsonLink, function(error, json) {
-    let data = json.commands[cmd];
-    console.log("\n");
+  request(
+    {
+      url: jsonLink,
+      json: true
+    },
+    function(error, response, body) {
+      if (!error && response.statusCode === 200) {
+        let data = body.commands[cmd];
 
-    if (data == null) {
-      spinner.fail("Command " + chalk.red(cmd) + " not found in gitcheats.com");
-      spinner.info(
-        chalk.gray(
-          "If gitcheats is missing a command, please consider contributing " +
-            chalk.blue("https://github.com/excalith/Git-Cheats")
-        )
-      );
-    } else {
-      LogCommand(cmd, data.desc[lang]);
+        if (data === undefined) {
+          spinner.fail(
+            "Command " + chalk.red(cmd) + " not found in gitcheats.com"
+          );
+          spinner.info(
+            chalk.gray(
+              "If gitcheats is missing a command, please consider contributing " +
+                chalk.blue("https://github.com/excalith/git-cheats")
+            )
+          );
+        } else {
+          console.log("\n");
+          LogCommand(cmd, data.desc[lang]);
 
-      data.options.forEach(element => {
-        LogCommand(element.code, element.desc[lang]);
-      });
+          data.options.forEach(element => {
+            LogCommand(element.code, element.desc[lang]);
+          });
+
+          spinner.stop();
+        }
+      }
     }
-
-    spinner.stop();
-  });
+  );
 }
 
 /**
@@ -112,24 +122,32 @@ function SetLanguage(key) {
     spinner: "dots"
   }).start();
 
-  getJSON(jsonLink, function(error, json) {
-    let data = json.settings.languages[key];
-    console.log("\n");
+  request(
+    {
+      url: jsonLink,
+      json: true
+    },
+    function(error, response, body) {
+      if (!error && response.statusCode === 200) {
+        let data = body.settings.languages[key];
 
-    if (data == null) {
-      spinner.fail("Language not found. Available languages:");
-      Object.keys(json.settings.languages).forEach(function(key) {
-        console.log(
-          key.padStart(4) + ": ".padStart(5) + json.settings.languages[key]
-        );
-      });
-    } else {
-      conf.set("lang", key);
-      spinner.succeed("Language set to " + data + "\n");
+        if (data === undefined) {
+          spinner.fail("Language not found. Available languages:");
+          Object.keys(body.settings.languages).forEach(function(key) {
+            console.log(
+              key.padStart(4) + ": ".padStart(5) + body.settings.languages[key]
+            );
+          });
+        } else {
+          console.log("\n");
+          conf.set("lang", key);
+          spinner.succeed("Language set to " + data + "\n");
+
+          spinner.stop();
+        }
+      }
     }
-
-    spinner.stop();
-  });
+  );
 }
 
 /**
