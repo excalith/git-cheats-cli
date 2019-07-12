@@ -1,6 +1,6 @@
 {
   "name": "git-cheats-cli",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "A Companion CLI App For Gitcheats",
   "main": "cli.js",
   "scripts": {
@@ -18,10 +18,10 @@
   "license": "MIT",
   "dependencies": {
     "chalk": "^2.4.2",
-    "configstore": "^4.0.0",
-    "git-observer": "^1.2.1",
-    "opn": "^5.4.0",
-    "ora": "^3.1.0",
+    "configstore": "^5.0.0",
+    "git-observer": "^1.2.3",
+    "opn": "^6.0.0",
+    "ora": "^3.4.0",
     "request": "^2.88.0"
   },
   "repository": {
@@ -32,12 +32,12 @@
     "gitcheats": "./cli.js"
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.1",
-    "eslint": "^5.14.1",
-    "eslint-config-prettier": "^4.0.0",
-    "eslint-plugin-prettier": "3.0.1",
-    "husky": "^1.3.1",
-    "lint-staged": "^8.1.4",
-    "prettier": "1.16.4"
+    "babel-eslint": "^10.0.2",
+    "eslint": "^6.0.1",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-prettier": "3.1.0",
+    "husky": "^3.0.0",
+    "lint-staged": "^9.2.0",
+    "prettier": "1.18.2"
   }
 }
