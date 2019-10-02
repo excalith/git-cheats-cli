@@ -7,6 +7,8 @@ const Configstore = require("configstore");
 const pkg = require("./package.json");
 const jsonLink =
   "https://raw.githubusercontent.com/excalith/git-cheats/master/assets/commands.json";
+const boxen = require("boxen");
+const checkForUpdate = require("update-check");
 const conf = new Configstore(pkg.name, { lang: "en" });
 
 let cmd = process.argv[2];
@@ -14,7 +16,9 @@ let bar = chalk.green("║ ");
 let lang = conf.get("lang");
 
 // Check Arguments
-if (cmd == "-h" || cmd == "--help") {
+if (cmd === "-v" || cmd === "--version") {
+  ShowVersion();
+} else if (cmd == "-h" || cmd == "--help") {
   ShowHelp();
 } else if (cmd == "-o" || cmd == "--open") {
   LaunchBrowser(process.argv[3]);
@@ -24,6 +28,41 @@ if (cmd == "-h" || cmd == "--help") {
   FetchCommand(process.argv[2]);
 } else {
   LaunchBrowser(false);
+}
+
+//** Check Updates */
+async function ShowVersion() {
+  let update = null;
+
+  try {
+    update = await checkForUpdate(pkg);
+  } catch (error) {
+    console.log(chalk.red("\nFailed to check for updates:"));
+    console.error(error);
+  }
+
+  let updateText;
+  let commandText;
+
+  if (update) {
+    updateText =
+      "Update available " +
+      chalk.gray(pkg.version) +
+      " → " +
+      chalk.green(update.latest);
+    commandText = "Run " + chalk.cyan("npm i -g " + pkg.name) + " to update";
+  } else {
+    updateText = "You are using the latest version";
+    commandText = pkg.name + " v" + pkg.version;
+  }
+
+  console.log(
+    boxen(updateText + "\n" + commandText, {
+      padding: 1,
+      margin: 1,
+      align: "center"
+    })
+  );
 }
 
 /**
