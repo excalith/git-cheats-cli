@@ -5,7 +5,8 @@ cache:
 node_js:
   - "node"
   - "lts/*"
-  - "7"
-  - "6"
+  - '12'
+  - '10'
+  - '8'
 script:
   - npm test
