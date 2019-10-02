@@ -12,6 +12,9 @@
 	<a href="https://travis-ci.org/excalith/git-cheats-cli">
 		<img alt="Build Status" height="18" src="https://img.shields.io/travis/excalith/git-cheats-cli.svg">
 	</a>
+	<a href="https://www.npmjs.com/package/git-commands-cli">
+		<img alt="NPM Installs" height="18" src="https://img.shields.io/npm/dt/git-commands-cli.svg?label=installs">
+	</a>
 	<a href="https://github.com/excalith/Git-Cheats-Cli/issues">
 		<img alt="Build Status" height="18" src="https://img.shields.io/github/issues/excalith/Git-Cheats-Cli.svg">
 	</a>
@@ -34,14 +37,16 @@ You can either use web based [GitCheats App](http://gitcheats.com) from your bro
 
 ## How To Install:
 
-- Requirements
-  - [NodeJS](https://nodejs.org)
-  - [NPM](https://www.npmjs.com/get-npm)
+### Using NPM
+
+`npm i -g git-commands-cli`
+
+### Clone
+
 - Clone or Download this repository
 - Within the directory, from your favorite terminal
   - npm install
   - npm link (might ask for permission depending on your OS)
-- Now you can use gitcheats directly from your terminal!
 
 ## Available Commands:
 
@@ -51,6 +56,7 @@ You can either use web based [GitCheats App](http://gitcheats.com) from your bro
 | gitcheats [command]        | Print command descriptions right into your terminal      |
 | gitcheats --open [command] | Open gitcheats.com in browser with your command filtered |
 | gitcheats --language [key] | Set your preffered language (Default: en)                |
+| gitcheats --version        | Shows and checks version                                 |
 | gitcheats --help           | Show commands for the app                                |
 
 ## How To Contribute:
